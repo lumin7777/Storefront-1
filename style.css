@@ -490,3 +490,247 @@ footer p {
         font-size: 3rem;
     }
 }
+/* ================================
+   SHOPPING BAG PANEL
+================================ */
+
+.bag-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+
+    background: rgba(48, 71, 53, 0.25);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 0.3s ease,
+                visibility 0.3s ease;
+}
+
+.bag-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 200;
+
+    width: min(420px, 90vw);
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #f4f0e7;
+
+    box-shadow: -10px 0 40px rgba(48, 71, 53, 0.12);
+
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+}
+
+.bag-panel.open {
+    transform: translateX(0);
+}
+
+.bag-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Bag header */
+
+.bag-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 35px 30px 25px;
+
+    border-bottom: 1px solid #d9d4c7;
+}
+
+.bag-header h2 {
+    margin-top: 5px;
+
+    font-size: 2.2rem;
+    color: #304735;
+}
+
+.close-bag {
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid #c9c5b9;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #52684f;
+
+    font-size: 1.5rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.close-bag:hover {
+    background: #52684f;
+    color: #fffdf7;
+}
+
+
+/* Bag contents */
+
+.bag-items {
+    flex: 1;
+
+    padding: 25px 30px;
+
+    overflow-y: auto;
+}
+
+.empty-bag {
+    padding-top: 50px;
+
+    text-align: center;
+
+    color: #7c8178;
+    font-family: "Playfair Display", serif;
+    font-size: 1.15rem;
+}
+
+
+/* Individual items */
+
+.bag-item {
+    display: flex;
+    gap: 15px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #ddd8cc;
+}
+
+.bag-item-image {
+    width: 75px;
+    height: 90px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d6d9cb;
+
+    color: #77806e;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+}
+
+.bag-item-details {
+    flex: 1;
+}
+
+.bag-item-details h3 {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    color: #344236;
+}
+
+.bag-item-details p {
+    margin-top: 3px;
+
+    color: #7c8178;
+    font-size: 0.8rem;
+}
+
+.bag-item-price {
+    display: block;
+    margin-top: 8px;
+
+    color: #52684f;
+    font-weight: 600;
+}
+
+
+/* Quantity controls */
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.quantity-controls button {
+    width: 24px;
+    height: 24px;
+
+    border: 1px solid #c9c5b9;
+    background: transparent;
+
+    color: #52684f;
+
+    cursor: pointer;
+}
+
+.quantity-controls span {
+    font-size: 0.8rem;
+}
+
+
+/* Bag footer */
+
+.bag-footer {
+    padding: 25px 30px 30px;
+
+    border-top: 1px solid #d9d4c7;
+
+    background: #ebe6da;
+}
+
+.bag-total {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+    color: #52684f;
+}
+
+.bag-total strong {
+    color: #304735;
+}
+
+
+.checkout-button {
+    width: 100%;
+    padding: 16px;
+
+    border: none;
+
+    background: #52684f;
+    color: #fffdf7;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.checkout-button:hover {
+    background: #3f543d;
+}
+
+
+/* Prevent background scrolling */
+
+body.bag-open {
+    overflow: hidden;
+}
