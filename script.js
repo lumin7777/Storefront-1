@@ -1,49 +1,88 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // =================================
-    // SMOOTH SCROLLING
-    // =================================
-
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(link => {
-        link.addEventListener("click", function (event) {
-            const target = document.querySelector(this.getAttribute("href"));
-
-            if (target) {
-                event.preventDefault();
-
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }
-        });
-    });
-
-
-    // =================================
-    // SHOPPING BAG
+    // ELEMENTS
     // =================================
 
     const bagButton = document.querySelector(".bag-button");
+    const bagPanel = document.querySelector(".bag-panel");
+    const bagOverlay = document.querySelector(".bag-overlay");
+    const closeBag = document.querySelector(".close-bag");
 
-    let bagCount = 0;
+    const bagItemsContainer = document.querySelector(".bag-items");
+    const bagTotal = document.querySelector(".bag-total strong");
 
-    document.querySelectorAll(".product-card").forEach(product => {
+    const products = document.querySelectorAll(".product-card");
+
+
+    // =================================
+    // SHOPPING BAG DATA
+    // =================================
+
+    let bag = [];
+
+
+    // =================================
+    // OPEN BAG
+    // =================================
+
+    function openBag() {
+        bagPanel.classList.add("open");
+        bagOverlay.classList.add("open");
+        document.body.classList.add("bag-open");
+    }
+
+
+    // =================================
+    // CLOSE BAG
+    // =================================
+
+    function closeShoppingBag() {
+        bagPanel.classList.remove("open");
+        bagOverlay.classList.remove("open");
+        document.body.classList.remove("bag-open");
+    }
+
+
+    bagButton.addEventListener("click", openBag);
+
+    closeBag.addEventListener("click", closeShoppingBag);
+
+    bagOverlay.addEventListener("click", closeShoppingBag);
+
+
+    // =================================
+    // ADD PRODUCT
+    // =================================
+
+    products.forEach(product => {
 
         product.addEventListener("click", () => {
 
-            bagCount++;
+            const name = product.querySelector("h3").textContent;
+            const description = product.querySelector(".product-info p").textContent;
+            const price = parseFloat(
+                product.querySelector(".price").textContent.replace("$", "")
+            );
 
-            bagButton.innerHTML = `🛍 <span>Bag (${bagCount})</span>`;
+            const existingItem = bag.find(item => item.name === name);
 
-            // Little visual feedback
-            product.style.transform = "translateY(-5px)";
+            if (existingItem) {
 
-            setTimeout(() => {
-                product.style.transform = "";
-            }, 250);
+                existingItem.quantity++;
+
+            } else {
+
+                bag.push({
+                    name: name,
+                    description: description,
+                    price: price,
+                    quantity: 1
+                });
+
+            }
+
+            updateBag();
 
         });
 
@@ -51,14 +90,152 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =================================
-    // NEWSLETTER BUTTON
+    // UPDATE BAG
     // =================================
 
-    const newsletterButton = document.querySelector(".newsletter-button");
+    function updateBag() {
+
+        bagItemsContainer.innerHTML = "";
+
+        if (bag.length === 0) {
+
+            bagItemsContainer.innerHTML = `
+                <p class="empty-bag">
+                    Your bag is feeling a little empty 🌿
+                </p>
+            `;
+
+        } else {
+
+            bag.forEach((item, index) => {
+
+                const bagItem = document.createElement("div");
+
+                bagItem.classList.add("bag-item");
+
+                bagItem.innerHTML = `
+                    <div class="bag-item-image">
+                        PHOTO
+                    </div>
+
+                    <div class="bag-item-details">
+
+                        <h3>${item.name}</h3>
+
+                        <p>${item.description}</p>
+
+                        <span class="bag-item-price">
+                            $${(item.price * item.quantity).toFixed(2)}
+                        </span>
+
+                        <div class="quantity-controls">
+
+                            <button
+                                class="decrease"
+                                data-index="${index}">
+                                −
+                            </button>
+
+                            <span>${item.quantity}</span>
+
+                            <button
+                                class="increase"
+                                data-index="${index}">
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+                bagItemsContainer.appendChild(bagItem);
+
+            });
+
+        }
+
+
+        // =================================
+        // TOTAL
+        // =================================
+
+        const total = bag.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+
+        bagTotal.textContent = `$${total.toFixed(2)}`;
+
+
+        // =================================
+        // BAG COUNT
+        // =================================
+
+        const itemCount = bag.reduce(
+            (sum, item) => sum + item.quantity,
+            0
+        );
+
+        bagButton.innerHTML =
+            `🛍 <span>Bag (${itemCount})</span>`;
+
+
+        // =================================
+        // QUANTITY BUTTONS
+        // =================================
+
+        document.querySelectorAll(".increase").forEach(button => {
+
+            button.addEventListener("click", event => {
+
+                event.stopPropagation();
+
+                const index = button.dataset.index;
+
+                bag[index].quantity++;
+
+                updateBag();
+
+            });
+
+        });
+
+
+        document.querySelectorAll(".decrease").forEach(button => {
+
+            button.addEventListener("click", event => {
+
+                event.stopPropagation();
+
+                const index = button.dataset.index;
+
+                bag[index].quantity--;
+
+                if (bag[index].quantity <= 0) {
+                    bag.splice(index, 1);
+                }
+
+                updateBag();
+
+            });
+
+        });
+
+    }
+
+
+    // =================================
+    // NEWSLETTER
+    // =================================
+
+    const newsletterButton =
+        document.querySelector(".newsletter-button");
 
     newsletterButton.addEventListener("click", () => {
 
-        newsletterButton.textContent = "You're on the list! ✿";
+        newsletterButton.textContent =
+            "You're on the list! ✿";
 
         newsletterButton.style.background = "#52684f";
         newsletterButton.style.color = "#fffdf7";
@@ -70,7 +247,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // HERO FADE-IN
     // =================================
 
-    const heroContent = document.querySelector(".hero-content");
+    const heroContent =
+        document.querySelector(".hero-content");
 
     heroContent.style.opacity = "0";
     heroContent.style.transform = "translateY(20px)";
@@ -89,8 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // =================================
     // PRODUCT REVEAL
     // =================================
-
-    const products = document.querySelectorAll(".product-card");
 
     const observer = new IntersectionObserver(
         entries => {
@@ -118,7 +294,9 @@ document.addEventListener("DOMContentLoaded", () => {
     products.forEach((product, index) => {
 
         product.style.opacity = "0";
-        product.style.transform = "translateY(25px)";
+
+        product.style.transform =
+            "translateY(25px)";
 
         product.style.transition =
             `opacity 0.7s ease ${index * 0.15}s,
