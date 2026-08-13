@@ -16,14 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =================================
-    // SHOPPING BAG DATA
+    // SHOPPING BAG
     // =================================
 
     let bag = [];
 
 
     // =================================
-    // OPEN BAG
+    // OPEN / CLOSE BAG
     // =================================
 
     function openBag() {
@@ -32,17 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.add("bag-open");
     }
 
-
-    // =================================
-    // CLOSE BAG
-    // =================================
-
     function closeShoppingBag() {
         bagPanel.classList.remove("open");
         bagOverlay.classList.remove("open");
         document.body.classList.remove("bag-open");
     }
-
 
     bagButton.addEventListener("click", openBag);
 
@@ -52,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =================================
-    // ADD PRODUCT
+    // ADD PRODUCTS
     // =================================
 
     products.forEach(product => {
@@ -60,12 +54,17 @@ document.addEventListener("DOMContentLoaded", () => {
         product.addEventListener("click", () => {
 
             const name = product.querySelector("h3").textContent;
-            const description = product.querySelector(".product-info p").textContent;
+
             const price = parseFloat(
-                product.querySelector(".price").textContent.replace("$", "")
+                product
+                    .querySelector(".price")
+                    .textContent
+                    .replace("$", "")
             );
 
-            const existingItem = bag.find(item => item.name === name);
+            const existingItem = bag.find(
+                item => item.name === name
+            );
 
             if (existingItem) {
 
@@ -75,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 bag.push({
                     name: name,
-                    description: description,
                     price: price,
                     quantity: 1
                 });
@@ -97,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         bagItemsContainer.innerHTML = "";
 
+
+        // Empty bag
+
         if (bag.length === 0) {
 
             bagItemsContainer.innerHTML = `
@@ -105,7 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 </p>
             `;
 
-        } else {
+        }
+
+
+        // Items
+
+        else {
 
             bag.forEach((item, index) => {
 
@@ -114,15 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 bagItem.classList.add("bag-item");
 
                 bagItem.innerHTML = `
-                    <div class="bag-item-image">
-                        PHOTO
-                    </div>
 
                     <div class="bag-item-details">
 
                         <h3>${item.name}</h3>
-
-                        <p>${item.description}</p>
 
                         <span class="bag-item-price">
                             $${(item.price * item.quantity).toFixed(2)}
@@ -147,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
 
                     </div>
+
                 `;
 
                 bagItemsContainer.appendChild(bagItem);
@@ -161,7 +163,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // =================================
 
         const total = bag.reduce(
-            (sum, item) => sum + item.price * item.quantity,
+            (sum, item) =>
+                sum + item.price * item.quantity,
             0
         );
 
@@ -173,7 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // =================================
 
         const itemCount = bag.reduce(
-            (sum, item) => sum + item.quantity,
+            (sum, item) =>
+                sum + item.quantity,
             0
         );
 
@@ -182,45 +186,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // =================================
-        // QUANTITY BUTTONS
+        // INCREASE QUANTITY
         // =================================
 
-        document.querySelectorAll(".increase").forEach(button => {
+        document
+            .querySelectorAll(".increase")
+            .forEach(button => {
 
-            button.addEventListener("click", event => {
+                button.addEventListener("click", event => {
 
-                event.stopPropagation();
+                    event.stopPropagation();
 
-                const index = button.dataset.index;
+                    const index = button.dataset.index;
 
-                bag[index].quantity++;
+                    bag[index].quantity++;
 
-                updateBag();
+                    updateBag();
 
-            });
-
-        });
-
-
-        document.querySelectorAll(".decrease").forEach(button => {
-
-            button.addEventListener("click", event => {
-
-                event.stopPropagation();
-
-                const index = button.dataset.index;
-
-                bag[index].quantity--;
-
-                if (bag[index].quantity <= 0) {
-                    bag.splice(index, 1);
-                }
-
-                updateBag();
+                });
 
             });
 
-        });
+
+        // =================================
+        // DECREASE QUANTITY
+        // =================================
+
+        document
+            .querySelectorAll(".decrease")
+            .forEach(button => {
+
+                button.addEventListener("click", event => {
+
+                    event.stopPropagation();
+
+                    const index = button.dataset.index;
+
+                    bag[index].quantity--;
+
+                    if (bag[index].quantity <= 0) {
+                        bag.splice(index, 1);
+                    }
+
+                    updateBag();
+
+                });
+
+            });
 
     }
 
