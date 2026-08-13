@@ -1,3 +1,4 @@
+```css
 /* ================================
    MOSS & THREAD
    Main Stylesheet
@@ -29,16 +30,16 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    
+
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     padding: 20px 6%;
-    
+
     background: rgba(244, 240, 231, 0.94);
     border-bottom: 1px solid #d9d4c7;
-    
+
     backdrop-filter: blur(10px);
 }
 
@@ -167,13 +168,13 @@ h2 em {
     right: 8%;
     top: 50%;
     transform: translateY(-50%);
-    
+
     width: 420px;
     height: 420px;
-    
+
     border-radius: 52% 48% 60% 40%;
     background: #d9dfce;
-    
+
     opacity: 0.75;
 }
 
@@ -243,12 +244,43 @@ h2 em {
     cursor: pointer;
 }
 
+
+/* Product image container */
+
 .product-image {
     position: relative;
     overflow: hidden;
-    background: #d6d9cb;
+
+    width: 100%;
     aspect-ratio: 4 / 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e4dfd3;
 }
+
+
+/* Actual clothing photos */
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.03);
+}
+
+
+/* Placeholder */
 
 .placeholder-image {
     width: 100%;
@@ -276,6 +308,9 @@ h2 em {
     transform: scale(1.04);
 }
 
+
+/* Product tag */
+
 .product-tag {
     position: absolute;
     top: 15px;
@@ -291,6 +326,9 @@ h2 em {
     letter-spacing: 1px;
     font-weight: 600;
 }
+
+
+/* Product information */
 
 .product-info {
     padding: 18px 3px;
@@ -437,60 +475,6 @@ footer p {
 
 
 /* ================================
-   MOBILE
-================================ */
-
-@media (max-width: 800px) {
-
-    .site-header {
-        padding: 18px 5%;
-    }
-
-    nav {
-        display: none;
-    }
-
-    .hero {
-        min-height: 650px;
-        padding: 80px 7%;
-    }
-
-    .hero h1 {
-        font-size: 4rem;
-    }
-
-    .hero-decoration {
-        width: 300px;
-        height: 300px;
-        right: -100px;
-        opacity: 0.45;
-    }
-
-    .products {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-    }
-
-    .about-section {
-        flex-direction: column;
-        padding: 90px 8%;
-        gap: 50px;
-    }
-
-    .about-decoration {
-        width: 250px;
-        height: 300px;
-    }
-
-    .about-content h2 {
-        font-size: 3rem;
-    }
-
-    .contact-section h2 {
-        font-size: 3rem;
-    }
-}
-/* ================================
    SHOPPING BAG PANEL
 ================================ */
 
@@ -504,8 +488,9 @@ footer p {
     opacity: 0;
     visibility: hidden;
 
-    transition: opacity 0.3s ease,
-                visibility 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
 }
 
 .bag-panel {
@@ -602,7 +587,7 @@ footer p {
 }
 
 
-/* Individual items */
+/* Individual bag items */
 
 .bag-item {
     display: flex;
@@ -706,7 +691,6 @@ footer p {
     color: #304735;
 }
 
-
 .checkout-button {
     width: 100%;
     padding: 16px;
@@ -734,14 +718,60 @@ footer p {
 body.bag-open {
     overflow: hidden;
 }
-.product-image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
 
-.product-card:hover .product-image img {
-    transform: scale(1.04);
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 800px) {
+
+    .site-header {
+        padding: 18px 5%;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        min-height: 650px;
+        padding: 80px 7%;
+    }
+
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+    .hero-decoration {
+        width: 300px;
+        height: 300px;
+        right: -100px;
+        opacity: 0.45;
+    }
+
+    .products {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .about-section {
+        flex-direction: column;
+        padding: 90px 8%;
+        gap: 50px;
+    }
+
+    .about-decoration {
+        width: 250px;
+        height: 300px;
+    }
+
+    .about-content h2 {
+        font-size: 3rem;
+    }
+
+    .contact-section h2 {
+        font-size: 3rem;
+    }
 }
+```
