@@ -734,3 +734,14 @@ footer p {
 body.bag-open {
     overflow: hidden;
 }
+.product-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.04);
+}
